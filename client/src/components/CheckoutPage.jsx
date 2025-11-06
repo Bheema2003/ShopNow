@@ -81,8 +81,8 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-indigo-50 to-blue-100 p-6">
-      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg p-8">
+    <div className="min-h-screen bg-gradient-to-b from-indigo-50 to-blue-100 p-4 sm:p-6">
+      <div className="max-w-4xl mx-auto bg-white rounded-2xl shadow-lg p-4 sm:p-8">
         <h1 className="text-3xl font-bold text-blue-700 mb-6 text-center">
           🧾 Checkout
         </h1>
@@ -108,7 +108,7 @@ export default function CheckoutPage() {
         </div>
 
         {/* Shipping Form */}
-        <form onSubmit={handlePayment} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <form onSubmit={handlePayment} className="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
           <input type="text" name="name" placeholder="Full Name" required
             value={formData.name} onChange={handleChange}
             className="border rounded-lg p-3 focus:ring-2 focus:ring-blue-400" />

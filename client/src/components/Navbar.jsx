@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { ShoppingCart } from "lucide-react";
 import { useCart } from "../context/CartContext";
@@ -7,19 +7,31 @@ import { useAuth } from "../context/AuthContext";
 export default function Navbar() {
   const { cartItems } = useCart();
   const { user, logout } = useAuth();
+  const [open, setOpen] = useState(false);
 
   return (
-    <nav className="bg-blue-700 text-white px-8 py-4 shadow-md flex justify-between items-center">
+    <nav className="bg-blue-700 text-white px-4 sm:px-8 py-4 shadow-md relative">
+      <div className="flex justify-between items-center">
       {/* Logo */}
-      <Link
-        to="/"
-        className="text-2xl font-bold tracking-wide hover:text-blue-200 transition-transform transform hover:scale-105"
-      >
-        🛍️ ShopNow
-      </Link>
+        <Link
+          to="/"
+          className="text-2xl font-bold tracking-wide hover:text-blue-200 transition-transform transform hover:scale-105"
+        >
+          🛍️ ShopNow
+        </Link>
+
+        {/* Mobile menu button */}
+        <button
+          className="sm:hidden p-2 rounded hover:bg-white/10"
+          onClick={() => setOpen((v) => !v)}
+          aria-label="Toggle menu"
+        >
+          ☰
+        </button>
+      </div>
 
       {/* Navigation Links */}
-      <div className="flex items-center gap-6">
+      <div className={`sm:flex items-center gap-6 ${open ? "flex" : "hidden sm:flex"} sm:static absolute left-0 right-0 sm:left-auto sm:right-auto top-full sm:top-auto bg-blue-700 sm:bg-transparent px-4 sm:px-0 py-3 sm:py-0 border-t border-blue-600 sm:border-0 z-50 flex-col sm:flex-row flex-wrap max-w-full`}>
         <Link
           to="/"
           className="hover:text-blue-200 font-semibold transition-colors"

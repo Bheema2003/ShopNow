@@ -18,7 +18,7 @@ export default function App() {
     <AuthProvider>
       <CartProvider>
         <Router>
-        <div className="min-h-screen flex flex-col bg-gradient-to-b from-blue-50 to-blue-100 text-gray-800">
+        <div className="min-h-screen flex flex-col bg-gradient-to-b from-blue-50 to-blue-100 text-gray-800 overflow-x-hidden">
           {/* Navbar */}
           <Navbar />
 
@@ -30,21 +30,21 @@ export default function App() {
               element={
                 <>
                   {/* Hero Section */}
-                  <header className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-20 text-center shadow-md">
-                    <h1 className="text-5xl font-extrabold mb-4 drop-shadow-lg">
+                  <header className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-12 sm:py-20 text-center shadow-md px-4">
+                    <h1 className="text-3xl sm:text-5xl font-extrabold mb-4 drop-shadow-lg">
                       🛒 ShopNow
                     </h1>
-                    <p className="text-xl font-light">
+                    <p className="text-base sm:text-xl font-light">
                       Discover the best gadgets at unbeatable prices!
                     </p>
-                    <button className="mt-6 px-6 py-3 bg-white text-blue-600 font-semibold rounded-xl shadow-lg hover:bg-blue-100 transition">
+                    <button className="mt-6 px-5 py-3 bg-white text-blue-600 font-semibold rounded-xl shadow-lg hover:bg-blue-100 transition">
                       Shop Now
                     </button>
                   </header>
 
                   {/* Products Section */}
-                  <main className="flex-grow p-8">
-                    <h2 className="text-3xl font-bold text-center mb-10 text-blue-700">
+                  <main className="flex-grow p-4 sm:p-8">
+                    <h2 className="text-2xl sm:text-3xl font-bold text-center mb-6 sm:mb-10 text-blue-700">
                       Featured Products
                     </h2>
                     <ProductList />

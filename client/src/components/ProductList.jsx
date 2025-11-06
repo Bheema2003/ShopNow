@@ -14,19 +14,19 @@ export default function ProductList() {
   }, []);
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
       {products.map((product) => (
         <div
           key={product._id}
-          className="bg-white shadow-lg rounded-xl p-4 hover:shadow-xl transition-all transform hover:scale-105 flex flex-col items-center"
+          className="bg-white shadow-lg rounded-xl p-4 hover:shadow-xl transition-all transform hover:scale-105 flex flex-col items-center w-full"
         >
           <img
             src={product.image}
             alt={product.name}
-            className="w-48 h-48 object-cover mb-3 rounded-lg"
+            className="w-full h-48 object-cover mb-3 rounded-lg"
           />
-          <h3 className="text-xl font-semibold">{product.name}</h3>
-          <p className="text-gray-500 mb-2">{product.description}</p>
+          <h3 className="text-lg sm:text-xl font-semibold text-center">{product.name}</h3>
+          <p className="text-gray-500 mb-2 text-center line-clamp-2">{product.description}</p>
           <p className="text-blue-600 font-bold text-lg mb-4">
             ₹{product.price}
           </p>
@@ -40,7 +40,7 @@ export default function ProductList() {
                 quantity: 1, // ✅ ensure default quantity
               })
             }
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-transform transform hover:scale-105"
+            className="bg-blue-600 w-full sm:w-auto text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-transform transform hover:scale-105"
           >
             Add to Cart
           </button>
