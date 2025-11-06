@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
+import React, { createContext, useContext, useEffect, useMemo, useState, useCallback } from "react";
 import { API_URL } from "../config";
 
 const AuthContext = createContext(null);
@@ -17,7 +17,7 @@ export function AuthProvider({ children }) {
     } catch {}
   }, []);
 
-  const login = async (email, password) => {
+  const login = useCallback(async (email, password) => {
     const res = await fetch(`${API_URL}/api/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -28,9 +28,9 @@ export function AuthProvider({ children }) {
     setUser(data.user);
     setToken(data.token);
     localStorage.setItem("auth", JSON.stringify(data));
-  };
+  }, []);
 
-  const register = async (name, email, password) => {
+  const register = useCallback(async (name, email, password) => {
     const res = await fetch(`${API_URL}/api/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -42,15 +42,15 @@ export function AuthProvider({ children }) {
     }
     // After register, immediately login
     await login(email, password);
-  };
+  }, [login]);
 
-  const logout = () => {
+  const logout = useCallback(() => {
     setUser(null);
     setToken(null);
     localStorage.removeItem("auth");
-  };
+  }, []);
 
-  const value = useMemo(() => ({ user, token, login, register, logout }), [user, token]);
+  const value = useMemo(() => ({ user, token, login, register, logout }), [user, token, login, register, logout]);
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
