@@ -121,12 +121,6 @@ export default function OrderSummary() {
         >
           Continue Shopping
         </Link>
-        <Link
-          to="/track"
-          className="px-6 py-3 bg-indigo-600 text-white rounded-xl hover:bg-indigo-700 transition-transform transform hover:scale-105 text-center"
-        >
-          Track Order
-        </Link>
       </div>
     </div>
   );

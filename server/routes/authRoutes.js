@@ -2,6 +2,7 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
+const crypto = require("crypto");
 const User = require("../models/user");
 const fileStore = require("../utils/userStore");
 
@@ -63,6 +64,54 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.post("/forgot-password", async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ message: "Email is required" });
+    const token = crypto.randomBytes(24).toString("hex");
+    const expires = new Date(Date.now() + 60 * 60 * 1000);
+    let user = null;
+    if (mongoose.connection.readyState === 1) {
+      user = await User.findOneAndUpdate(
+        { email },
+        { resetToken: token, resetTokenExpires: expires },
+        { new: true }
+      );
+    } else {
+      user = fileStore.setResetToken(email, token, expires);
+    }
+    const resetUrl = `${req.protocol}://${req.get("host").replace(/\/+$/,'')}/reset-password/${token}`;
+    return res.json({ message: "If the email exists, a reset link is generated", resetUrl, token });
+  } catch {
+    return res.status(500).json({ message: "Server error" });
+  }
+});
+
+router.post("/reset-password", async (req, res) => {
+  try {
+    const { token, password } = req.body;
+    if (!token || !password) return res.status(400).json({ message: "Token and password are required" });
+    const passwordHash = await bcrypt.hash(password, 10);
+    let user = null;
+    if (mongoose.connection.readyState === 1) {
+      const found = await User.findOne({ resetToken: token });
+      if (!found) return res.status(400).json({ message: "Invalid token" });
+      if (!found.resetTokenExpires || found.resetTokenExpires < new Date()) return res.status(400).json({ message: "Token expired" });
+      found.passwordHash = passwordHash;
+      found.resetToken = null;
+      found.resetTokenExpires = null;
+      await found.save();
+      user = found;
+    } else {
+      const found = fileStore.findByResetToken(token);
+      if (!found) return res.status(400).json({ message: "Invalid token" });
+      if (!found.resetTokenExpires || new Date(found.resetTokenExpires) < new Date()) return res.status(400).json({ message: "Token expired" });
+      user = fileStore.updatePasswordByResetToken(token, passwordHash);
+    }
+    return res.json({ message: "Password reset successful" });
+  } catch {
+    return res.status(500).json({ message: "Server error" });
+  }
+});
+
 module.exports = router;
-
-

@@ -36,10 +36,15 @@ export default function Login() {
             {loading ? "Signing in..." : "Sign In"}
           </button>
         </form>
-        <p className="text-sm text-center mt-4">No account? <Link to="/register" className="text-blue-700 font-semibold">Register</Link></p>
+        <div className="mt-4">
+          <Link
+            to="/register"
+            className="w-full block text-center bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition-transform transform hover:scale-105"
+          >
+            Create new account
+          </Link>
+        </div>
       </div>
     </div>
   );
 }
-
-

@@ -1,61 +1,61 @@
-# ShopNow – Full‑Stack E‑commerce
+# ShopNow
 
-ShopNow is a simple full‑stack e‑commerce demo built with:
-- Client: React (Create React App) with Tailwind via CDN
-- Server: Node/Express + MongoDB (JWT auth)
+## Requirements
+- Node.js 18 or newer
+- npm 9 or newer
+- Optional: MongoDB with a reachable `MONGO_URI` if you want server-side persistence
 
-## Live
-- Frontend (Netlify): https://shopnowon.netlify.app/
-- Backend (Render): https://shopnow-gnki.onrender.com
+## One-time Setup
+- Ensure Node.js and npm are installed
+- Clone or copy the project folder to your machine
 
-## Repositories / Structure
+## Install Dependencies Using requirement.txt
+- The file `requirement.txt` lists project directories to install
+- Use one of the following commands:
+
+Windows PowerShell:
 ```
-shop now/
-  client/   # React app (see client/README.md for detailed steps)
-  server/   # Node/Express API
+Get-Content .\requirement.txt | ForEach-Object {
+  if ($_ -and -not $_.StartsWith('#')) { npm install -C $_ }
+}
 ```
 
-## Quick Start
-Backend (server):
-1. Create `server/.env`:
+Windows CMD:
 ```
-MONGO_URI=your-mongodb-uri-with-dbname
-JWT_SECRET=any-strong-secret
+for /f %d in (requirement.txt) do npm install -C %d
 ```
-2. Install & run:
+
+macOS/Linux bash:
+```
+while read -r d; do
+  [ -z "$d" ] && continue
+  case "$d" in \#*) continue;; esac
+  npm install -C "$d"
+done < requirement.txt
+```
+
+## Environment Variables (Server)
+- Create `server/.env` with:
+```
+MONGO_URI=<your_mongo_connection_string_optional>
+JWT_SECRET=<your_secret_string_optional>
+```
+- If `MONGO_URI` is not set, server will still run, but some features will use local fallback
+
+## Run the Project
+- Start backend:
 ```
 cd server
-npm install
 npm start
 ```
-3. (Optional) Seed sample products:
-```
-node seed.js
-```
-
-Frontend (client):
+- Start frontend (in a second terminal):
 ```
 cd client
-npm install
 npm start
 ```
-- Uses `http://localhost:5000` on localhost, or `REACT_APP_API_URL` if set, otherwise falls back to the deployed API.
+- Open `http://localhost:3000/` in your browser
 
-## Deploy
-- Netlify (client):
-  - Base directory: `client`
-  - Build command: `npm install && npm run build`
-  - Publish directory: `client/build`
-  - Env: `REACT_APP_API_URL=https://shopnow-gnki.onrender.com`
-  - SPA redirect: `/* -> /index.html 200`
-- Render/Railway (server): working directory `server`, start `npm start`, set `MONGO_URI` and `JWT_SECRET`.
-
-## API Endpoints
-- `GET /api/products` – list products
-- `POST /api/auth/register` – `{ name, email, password }`
-- `POST /api/auth/login` – `{ email, password }`
-
-## License
-MIT (for educational/demo use)
-
+## Notes
+- Admin access is available from the top navbar link when not logged in
+- Orders and tracking work with MongoDB; without it, local storage is used for basic tracking
 

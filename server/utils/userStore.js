@@ -38,7 +38,35 @@ function createUser({ name, email, passwordHash }) {
   return user;
 }
 
-module.exports = { findByEmail, createUser };
+function setResetToken(email, token, expiresAt) {
+  const users = readAll();
+  const idx = users.findIndex(u => u.email.toLowerCase() === String(email).toLowerCase());
+  if (idx === -1) return null;
+  users[idx].resetToken = token;
+  users[idx].resetTokenExpires = expiresAt.toISOString();
+  writeAll(users);
+  return users[idx];
+}
+
+function findByResetToken(token) {
+  const users = readAll();
+  const u = users.find(u => u.resetToken === token);
+  if (!u) return null;
+  return u;
+}
+
+function updatePasswordByResetToken(token, passwordHash) {
+  const users = readAll();
+  const idx = users.findIndex(u => u.resetToken === token);
+  if (idx === -1) return null;
+  users[idx].passwordHash = passwordHash;
+  users[idx].resetToken = null;
+  users[idx].resetTokenExpires = null;
+  writeAll(users);
+  return users[idx];
+}
+
+module.exports = { findByEmail, createUser, setResetToken, findByResetToken, updatePasswordByResetToken };
 
 
 

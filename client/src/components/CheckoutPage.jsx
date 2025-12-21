@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 export default function CheckoutPage() {
-  const { cartItems, clearCart } = useCart();
+  const { cartItems } = useCart();
   const navigate = useNavigate();
   const { user } = useAuth();
 
@@ -26,7 +26,7 @@ export default function CheckoutPage() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handlePayment = (e) => {
+  const handlePayment = async (e) => {
     e.preventDefault();
 
     const orderId = Math.floor(100000 + Math.random() * 900000); // random order id
@@ -39,25 +39,7 @@ export default function CheckoutPage() {
       userId: user?.id || null,
     };
 
-    try {
-      // Global orders index by ID (for tracking page)
-      const byId = JSON.parse(localStorage.getItem("orders") || "{}");
-      byId[String(orderId)] = orderData;
-      localStorage.setItem("orders", JSON.stringify(byId));
-
-      // Per-user orders list (for My Orders)
-      if (user?.id) {
-        const userOrders = JSON.parse(localStorage.getItem("userOrders") || "{}");
-        const list = userOrders[user.id] || [];
-        list.push(orderData);
-        userOrders[user.id] = list;
-        localStorage.setItem("userOrders", JSON.stringify(userOrders));
-      }
-    } catch (err) {}
-
-    clearCart();
-
-    navigate("/order-summary", { state: { orderData } });
+    navigate("/payment", { state: { orderDraft: orderData } });
   };
 
   if (!user) {

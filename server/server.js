@@ -18,6 +18,10 @@ const productRoutes = require('./routes/productRoutes');
 app.use('/api/products', productRoutes);
 const authRoutes = require('./routes/authRoutes');
 app.use('/api/auth', authRoutes);
+const adminRoutes = require('./routes/adminRoutes');
+app.use('/api/admin', adminRoutes);
+const orderRoutes = require('./routes/orderRoutes');
+app.use('/api/orders', orderRoutes);
 
 // MongoDB connection (optional). If no MONGO_URI, fall back to file store.
 if (process.env.MONGO_URI) {

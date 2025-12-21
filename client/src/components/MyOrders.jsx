@@ -41,7 +41,7 @@ export default function MyOrders() {
                   <p className="font-semibold">Order #{order.orderId}</p>
                   <p className="text-sm text-gray-600">Items: {order.items.reduce((a,i)=>a+i.quantity,0)} • Total: ₹{order.totalAmount}</p>
                 </div>
-                <Link to="/track" className="px-4 py-2 bg-blue-600 text-white rounded-lg">Track</Link>
+                <Link to={`/track/${order.orderId}`} className="px-4 py-2 bg-blue-600 text-white rounded-lg">Track</Link>
               </li>
             ))}
           </ul>

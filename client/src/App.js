@@ -4,6 +4,7 @@ import Navbar from "./components/Navbar";
 import ProductList from "./components/ProductList";
 import CartPage from "./components/CartPage";
 import CheckoutPage from "./components/CheckoutPage";
+import PaymentPage from "./components/PaymentPage";
 import { CartProvider } from "./context/CartContext";
 import { AuthProvider } from "./context/AuthContext";
 import Login from "./components/Login";
@@ -11,13 +12,16 @@ import Register from "./components/Register";
 import OrderSummary from "./components/OrderSummary";
 import TrackOrder from "./components/TrackOrder";
 import MyOrders from "./components/MyOrders";
+import AdminLogin from "./components/AdminLogin";
+import AdminDashboard from "./components/AdminDashboard";
+
 
 
 export default function App() {
   return (
     <AuthProvider>
-      <CartProvider>
-        <Router>
+    <CartProvider>
+      <Router>
         <div className="min-h-screen flex flex-col bg-gradient-to-b from-blue-50 to-blue-100 text-gray-800 overflow-x-hidden">
           {/* Navbar */}
           <Navbar />
@@ -53,24 +57,28 @@ export default function App() {
               }
             />
 
-          {/* Auth */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
+            {/* Auth */}
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
 
             {/* Cart Page */}
             <Route path="/cart" element={<CartPage />} />
 
             {/* Checkout Page */}
             <Route path="/checkout" element={<CheckoutPage />} />
+            <Route path="/payment" element={<PaymentPage />} />
             
             {/* Order Summary Page */}
             <Route path="/order-summary" element={<OrderSummary />} />  
 
             {/* Track Order Page */}
-            <Route path="/track" element={<TrackOrder />} />
+            <Route path="/track/:orderId" element={<TrackOrder />} />
 
             {/* My Orders */}
             <Route path="/my-orders" element={<MyOrders />} />
+            <Route path="/admin-login" element={<AdminLogin />} />
+            <Route path="/admin-dashboard" element={<AdminDashboard />} />
+
           </Routes>
 
           {/* Footer */}
@@ -78,10 +86,13 @@ export default function App() {
             <p className="text-sm">
               &copy; {new Date().getFullYear()} ShopNow. All Rights Reserved.
             </p>
+            <div className="mt-2">
+              <a href="/admin-login" className="text-xs text-blue-300 hover:text-white transition">Admin Access</a>
+            </div>
           </footer>
         </div>
-        </Router>
-      </CartProvider>
+      </Router>
+    </CartProvider>
     </AuthProvider>
   );
 }
